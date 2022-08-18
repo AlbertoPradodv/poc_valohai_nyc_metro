@@ -1,0 +1,10 @@
+- step:
+    name: preprocess-dataset
+    image: python:3.9
+    command:
+    - pip install -r requirements.txt
+    - python ./preprocess_dataset.py {parameters}
+    inputs:
+    - name: myinput
+      default:  datum://0182b0ad-0cee-a0a0-a4f8-ec01b8421bb3
+      optional: false
