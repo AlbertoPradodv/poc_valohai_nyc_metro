@@ -8,3 +8,38 @@
     - name: myinput
       default:  datum://0182b0ad-0cee-a0a0-a4f8-ec01b8421bb3
       optional: false
+
+- step:
+    name: select_data
+    command:
+      - pip install -r requirements.txt
+      - pip list
+      - python select_data.py
+    inputs:
+      - name: raw
+        default: datum://0182c6ec-b632-ba5f-dfde-b5e39f7187bf
+    image: continuumio/anaconda3
+
+- step:
+    name: simple_train
+    command:
+      - pip install -r requirements_ml.txt
+      - pip install -r requirements_prophet.txt
+      - python -m pip install prophet valohai-utils
+      - python train_line.py
+    inputs:
+      - name: sample
+        default: '' #datum://0182c7ca-c1af-4cc6-07c0-2718462b28a9
+    image: continuumio/anaconda3
+
+- pipeline:
+    name: preprocess-and-train
+    nodes:
+    - name: preprocess
+      type: execution
+      step: select_data
+    - name: train
+      type: execution
+      step: simple_train
+    edges:
+    - [preprocess.output.data_sample.csv, train.input.sample]
