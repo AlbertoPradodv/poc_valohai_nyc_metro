@@ -26,16 +26,18 @@
       - pip install -r requirements_ml.txt
       - pip install -r requirements_prophet.txt
       - python -m pip install prophet valohai-utils
-      - python train_line.py
+      - python train_line.py {parameters}
     inputs:
       - name: sample
-        default: 'datum://0182c7ca-c1af-4cc6-07c0-2718462b28a9'
+        default: 'datum://0182ccac-a92f-2bc6-845a-915ad5d274bc'
     image: continuumio/anaconda3
     parameters:
       - name: growth
+        pass-as: --growth={v}
         type: string
         default: linear
       - name: changepoint_prior_scale
+        pass-as: --changepoint_prior_scale={v}
         type: float
         default: 0.005
 

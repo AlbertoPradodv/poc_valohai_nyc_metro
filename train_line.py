@@ -24,6 +24,7 @@ def create_daily_forecast_data(df):
     df_ts = df_ts.set_index('time')
     df_ts = df_ts.resample('d').sum()
     df_ts.columns = ['ts']
+    print('Dataset ready')
     
     return df_ts
 
