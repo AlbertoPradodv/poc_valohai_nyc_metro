@@ -29,8 +29,15 @@
       - python train_line.py
     inputs:
       - name: sample
-        default: '' #datum://0182c7ca-c1af-4cc6-07c0-2718462b28a9
+        default: 'datum://0182c7ca-c1af-4cc6-07c0-2718462b28a9'
     image: continuumio/anaconda3
+    parameters:
+      - name: growth
+        type: string
+        default: linear
+      - name: changepoint_prior_scale
+        type: float
+        default: 0.005
 
 - pipeline:
     name: preprocess-and-train

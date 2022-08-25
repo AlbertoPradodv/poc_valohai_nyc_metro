@@ -34,8 +34,23 @@ def data_separation(df_ts):
     
     return train, test
 
-def train_model(X):
-    model = prophet.Prophet()
+def load_params():
+    param_growth = valohai.parameters('growth').value
+    param_changepoint_prior_scale = valohai.parameters('changepoint_prior_scale').value
+
+    params = {
+        'growth': param_growth,
+        'changepoint_prior_scale': param_changepoint_prior_scale
+    }
+
+    return params
+
+def train_model(X, params=None):
+    if params:
+        with valohai.logger() as logger:
+            logger.log('params', params)
+    
+    model = prophet.Prophet(**params)
     model.fit(X)
     
     return model
@@ -71,7 +86,8 @@ def main():
     
     df_ts = create_daily_forecast_data(df)
     train, test = data_separation(df_ts)
-    model = train_model(train)
+    params = load_params()
+    model = train_model(train, params)
     forecast = predict(model, test.shape[0], '1d')
 
     plot_predictions(test, forecast)
