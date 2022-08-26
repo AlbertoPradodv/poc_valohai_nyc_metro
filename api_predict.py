@@ -5,7 +5,7 @@ app = FastAPI()
 model_path = 'model-prophet'
 loaded_model = None
  
-@app.post("/pred")
+@app.post("{full_path:path}")
 async def pred(periods):
     print(periods)
     
