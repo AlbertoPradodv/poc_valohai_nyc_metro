@@ -6,7 +6,7 @@ model_path = 'model-prophet'
 loaded_model = None
  
 @app.post("{full_path:path}")
-async def pred(periods):
+async def predict(periods):
     print(periods)
     
     global loaded_model
