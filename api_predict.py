@@ -1,21 +1,36 @@
 from fastapi import FastAPI
- 
+from prophet.serialize import model_from_json
+
 app = FastAPI()
  
 model_path = 'model-prophet'
-loaded_model = None
+model = None
+
+def load_model():
+    with open(model_path, 'r') as file:
+        model = model_from_json(file.read())
+    return model
+
+def predict(model, periods):
+    future = model.make_future_dataframe(periods=periods, freq='1d')
+    forecast = model.predict(future)
+    print(forecast)
+    forecast = forecast.set_index('ds')
+    forecast = forecast['yhat'].iloc[-periods:]
+    return forecast.to_json()
+
+# def save_predictions(predictions):
+#     path = valohai.outputs().path('predictions.json')
+#     with open(path, 'w') as file:
+#         json.dump(predictions, file, default=lambda v: str(v))
  
+
 @app.post("{full_path:path}")
 async def predict(periods):
-    print(periods)
+    global model
     
-    global loaded_model
-    # Check if model is already loaded
- 
-    # if not loaded_model:
-    #     loaded_model = tf.keras.models.load_model(model_path)
- 
-    # Predict with the model
-    # prediction = loaded_model.predict_classes(image_data)
-    
-    return f'Predicted_Digit: {periods}'
+    if not model:
+        model = load_model() 
+      
+    predictions = predict(model, periods)
+    return str(predictions)
