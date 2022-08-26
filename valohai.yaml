@@ -83,3 +83,13 @@
       step: simple_train
     edges:
     - [preprocess.output.data_sample.csv, train.input.sample]
+
+- endpoint:
+    name: api-predict
+    description: API fo Prophet model
+    image: continuumio/anaconda3
+    server-command:
+      - pip install -r requirements_ml.txt
+      - pip install -r requirements_prophet.txt
+      - python -m pip install prophet valohai-utils fastapi uvicorn
+      - uvicorn api_predict:app --host 0.0.0.0 --port 8000
