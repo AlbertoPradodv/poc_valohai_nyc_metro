@@ -14,16 +14,10 @@ def load_model():
 def forecast(model, periods):
     future = model.make_future_dataframe(periods=periods, freq='1d')
     forecast = model.predict(future)
-    print(forecast)
+    forecast['ds'] = forecast['ds'].dt.strftime('%Y-%m-%d')
     forecast = forecast.set_index('ds')
     forecast = forecast['yhat'].iloc[-periods:]
-    return forecast.to_json()
-
-# def save_predictions(predictions):
-#     path = valohai.outputs().path('predictions.json')
-#     with open(path, 'w') as file:
-#         json.dump(predictions, file, default=lambda v: str(v))
- 
+    return forecast.to_json() 
 
 @app.post("{full_path:path}")
 async def predict(periods):
@@ -33,4 +27,4 @@ async def predict(periods):
         model = load_model() 
       
     predictions = forecast(model, int(periods))
-    return str(predictions)
+    return predictions
