@@ -83,3 +83,12 @@
       step: simple_train
     edges:
     - [preprocess.output.data_sample.csv, train.input.sample]
+
+- endpoint:
+    name: api-predict
+    description: API fo Prophet model
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.7
+    server-command: python -m pip install prophet && uvicorn api_predict:app --host 0.0.0.0 --port 8000
+    files:
+      - name: model
+        path: model-prophet

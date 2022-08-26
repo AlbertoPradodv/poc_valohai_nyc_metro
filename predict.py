@@ -10,7 +10,7 @@ def load_data():
 
 def load_model():
     path = valohai.inputs('model').path()
-
+    
     with open(path, 'r') as file:
         model = model_from_json(file.read())
     return model
