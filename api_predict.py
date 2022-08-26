@@ -32,5 +32,5 @@ async def predict(periods):
     if not model:
         model = load_model() 
       
-    predictions = forecast(model, periods)
+    predictions = forecast(model, int(periods))
     return str(predictions)
