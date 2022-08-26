@@ -85,7 +85,7 @@
     - [preprocess.output.data_sample.csv, train.input.sample]
 
 - endpoint:
-    name: api-predict
+    name: pred
     description: API fo Prophet model
     image: tiangolo/uvicorn-gunicorn-fastapi:python3.7
     server-command: uvicorn api_predict:app --host 0.0.0.0 --port 8000

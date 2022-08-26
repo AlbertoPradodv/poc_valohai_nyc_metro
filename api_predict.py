@@ -5,8 +5,8 @@ app = FastAPI()
 model_path = 'model-prophet'
 loaded_model = None
  
-@app.post("/predict")
-async def predict(periods):
+@app.post("/pred")
+async def pred(periods):
     print(periods)
     
     global loaded_model
