@@ -11,7 +11,7 @@ def load_model():
         model = model_from_json(file.read())
     return model
 
-def predict(model, periods):
+def forecast(model, periods):
     future = model.make_future_dataframe(periods=periods, freq='1d')
     forecast = model.predict(future)
     print(forecast)
@@ -32,5 +32,5 @@ async def predict(periods):
     if not model:
         model = load_model() 
       
-    predictions = predict(model, periods)
+    predictions = forecast(model, periods)
     return str(predictions)
