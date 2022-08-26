@@ -41,6 +41,37 @@
         type: float
         default: 0.005
 
+- step:
+    name: train
+    command:
+      - pip install -r requirements_ml.txt
+      - pip install -r requirements_prophet.txt
+      - python -m pip install prophet valohai-utils
+      - python train.py
+    inputs:
+      - name: data
+        default: 'datum://0182ccac-a92f-2bc6-845a-915ad5d274bc'
+    image: continuumio/anaconda3
+    parameters:
+      - name: growth
+        type: string
+        default: linear
+      - name: changepoint_prior_scale
+        type: float
+        default: 0.005
+
+- step:
+    name: predict
+    command:
+      - pip install -r requirements_ml.txt
+      - pip install -r requirements_prophet.txt
+      - python -m pip install prophet valohai-utils
+      - python predict.py
+    inputs:
+      - name: model
+        default: 'datum://model-prophet'
+    image: continuumio/anaconda3
+
 - pipeline:
     name: preprocess-and-train
     nodes:
